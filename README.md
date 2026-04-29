@@ -334,7 +334,7 @@ The HTML report is **self-contained** (single `.html` file, no external assets r
 
 ---
 
-## 📸 Sample Output
+## Sample Output
 
 ### CLI Summary
 
@@ -426,7 +426,7 @@ python scanner.py --target 192.168.1.0/24 --nvd-api-key "YOUR-KEY"
 
 ---
 
-## ⚙️ Configuration Reference
+## Configuration Reference
 
 ### `scanner.py` Arguments
 
@@ -452,7 +452,7 @@ python scanner.py --target 192.168.1.0/24 --nvd-api-key "YOUR-KEY"
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 net-vuln-scanner/
