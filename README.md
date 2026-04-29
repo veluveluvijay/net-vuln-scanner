@@ -206,36 +206,36 @@ sudo python scanner.py \
 ### Stealth / Slow Scan (IDS-friendly)
 
 ```bash
-python scanner.py \
-  --target 10.0.0.1 \
-  --scan-args "-sV --open -T2 --max-rtt-timeout 500ms" \
+python scanner.py 
+  --target 10.0.0.1 
+  --scan-args "-sV --open -T2 --max-rtt-timeout 500ms" 
   --output report.html
 ```
 
 ### Critical Only Report
 
 ```bash
-python scanner.py \
-  --target 172.16.0.0/24 \
-  --min-severity CRITICAL \
+python scanner.py 
+  --target 172.16.0.0/24 
+  --min-severity CRITICAL 
   --output critical_only.html
 ```
 
 ### With NVD API Key (via CLI)
 
 ```bash
-python scanner.py \
-  --target 192.168.1.0/24 \
-  --nvd-api-key "YOUR-API-KEY-HERE" \
+python scanner.py 
+  --target 192.168.1.0/24 
+  --nvd-api-key "YOUR-API-KEY-HERE" 
   --output report.html
 ```
 
 ### Export JSON for SIEM Integration
 
 ```bash
-python scanner.py \
-  --target 192.168.1.0/24 \
-  --output report.html \
+python scanner.py 
+  --target 192.168.1.0/24 
+  --output report.html 
   --json /var/log/vuln-scans/$(hostname)_$(date +%Y%m%d).json
 ```
 
@@ -249,16 +249,16 @@ The `scheduler.py` tool wraps cron (Linux/macOS) and Windows Task Scheduler.
 
 ```bash
 # Daily at 02:00 AM
-python scheduler.py install \
-  --target 192.168.1.0/24 \
-  --frequency daily \
+python scheduler.py install 
+  --target 192.168.1.0/24 
+  --frequency daily 
   --time 02:00
 
 # Weekly on Monday at 03:30 AM
-python scheduler.py install \
-  --target 10.0.0.0/24 \
-  --frequency weekly \
-  --day monday \
+python scheduler.py install 
+  --target 10.0.0.0/24 
+  --frequency weekly 
+  --day monday 
   --time 03:30
 
 # List all scheduled net-vuln-scanner jobs
@@ -274,9 +274,9 @@ python scheduler.py run --target 192.168.1.0/24
 Generated crontab entry example:
 
 ```cron
-0 2 * * * echo YES | /usr/bin/python3 /opt/net-vuln-scanner/scanner.py \
-  --target 192.168.1.0/24 \
-  --output /opt/net-vuln-scanner/reports/scan_192_168_1_0_24_$(date +%Y%m%d_%H%M%S).html \
+0 2 * * * echo YES | /usr/bin/python3 /opt/net-vuln-scanner/scanner.py 
+  --target 192.168.1.0/24 
+  --output /opt/net-vuln-scanner/reports/scan_192_168_1_0_24_$(date +%Y%m%d_%H%M%S).html 
   # NET-VULN-SCANNER target=192.168.1.0/24
 ```
 
