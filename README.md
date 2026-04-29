@@ -1,5 +1,8 @@
 # 🛡️ net-vuln-scanner
 
+## 📊 Live Sample Report
+👉 [Click here to view a live vulnerability scan report](https://veluveluvijay.github.io/net-vuln-scanner/sample_report.html)
+
 **Automated Network Vulnerability Scanner** — wraps Nmap for host/port/service discovery and queries the [NIST National Vulnerability Database (NVD)](https://nvd.nist.gov/) to match discovered services against known CVEs. Generates polished, self-contained HTML reports with severity ratings and supports scheduled scanning via cron or Windows Task Scheduler.
 
 > **⚠ IMPORTANT:** This tool is for **authorized security testing only**. Read the [Legal & Ethical Use](#️-legal--ethical-use) section before proceeding.
