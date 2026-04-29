@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+reports/
+*.html
+*.json
+_task_*.bat
+.DS_Store

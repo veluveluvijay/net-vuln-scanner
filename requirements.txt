@@ -1,0 +1,6 @@
+#net-vuln-scanner/requirements.txt
+#Python 3.9+ required
+
+python-nmap>=0.7.1          #Nmap wrapper
+requests>=2.31.0            #HTTP client for NVD API
+python-dotenv>=1.0.0        #.env file loading (optional)
