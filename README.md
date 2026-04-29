@@ -6,7 +6,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Features](#-features)
 - [Architecture](#-architecture)
@@ -239,7 +239,6 @@ python scanner.py
   --json /var/log/vuln-scans/$(hostname)_$(date +%Y%m%d).json
 ```
 
----
 
 ## Scheduled Scanning
 
