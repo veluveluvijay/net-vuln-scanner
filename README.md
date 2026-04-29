@@ -188,18 +188,18 @@ python scanner.py --target 192.168.1.100
 ### Subnet Sweep with Custom Ports
 
 ```bash
-python scanner.py \
-  --target 10.0.0.0/24 \
-  --ports 21,22,23,25,53,80,110,443,445,3306,3389,8080,8443 \
+python scanner.py 
+  --target 10.0.0.0/24 
+  --ports 21,22,23,25,53,80,110,443,445,3306,3389,8080,8443 
   --output reports/$(date +%Y%m%d)_scan.html
 ```
 
 ### Aggressive Scan (requires root/Administrator)
 
 ```bash
-sudo python scanner.py \
-  --target 192.168.1.0/24 \
-  --scan-args "-sS -sV -sC -O --open -T4" \
+sudo python scanner.py 
+  --target 192.168.1.0/24 
+  --scan-args "-sS -sV -sC -O --open -T4" 
   --output report.html
 ```
 
@@ -283,16 +283,16 @@ Generated crontab entry example:
 
 ```powershell
 # Daily at 02:00
-python scheduler.py install `
-  --target 192.168.1.0/24 `
-  --frequency daily `
+python scheduler.py install 
+  --target 192.168.1.0/24 
+  --frequency daily 
   --time 02:00
 
 # Weekly on Wednesday
-python scheduler.py install `
-  --target 10.0.0.0/24 `
-  --frequency weekly `
-  --day wednesday `
+python scheduler.py install 
+  --target 10.0.0.0/24 
+  --frequency weekly 
+  --day wednesday 
   --time 03:00
 
 # List / Remove
