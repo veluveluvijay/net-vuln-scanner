@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vulnerability Scan Report — 192.168.64.4 — 2026-04-29T09:23:40.413939Z</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #111118;
+      --card:      #16161f;
+      --border:    #2a2a3a;
+      --text:      #e2e2f0;
+      --muted:     #7070a0;
+      --accent:    #6e6aff;
+      --mono:      'JetBrains Mono', monospace;
+      --sans:      'Space Grotesk', sans-serif;
+      --r-sm:      6px;
+      --r-md:      10px;
+      --r-lg:      16px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Scrollbar ───────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Layout ──────────────────────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* ── Header ──────────────────────────────────────────────────── */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #0d0d16 0%, #0a0a14 100%);
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 18px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      border-radius: var(--r-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .logo-text { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+    .logo-sub { color: var(--muted); font-size: 11px; }
+    .header-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: right; }
+    .header-meta span { color: var(--text); }
+
+    /* ── Hero ────────────────────────────────────────────────────── */
+    .hero {
+      padding: 56px 0 40px;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; left: -24px; right: -24px; bottom: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(110,106,255,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .hero h1 .target {
+      font-family: var(--mono);
+      color: var(--accent);
+      font-size: 28px;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      margin-top: 20px;
+    }
+    .meta-chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .meta-chip span { color: var(--text); margin-left: 4px; }
+
+    /* ── Summary Cards ───────────────────────────────────────────── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin: 36px 0;
+    }
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 20px 16px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform .15s, border-color .15s;
+    }
+    .summary-card:hover { transform: translateY(-2px); }
+    .summary-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .summary-card.CRITICAL::before { background: #ff2d55; }
+    .summary-card.HIGH::before     { background: #ff6b35; }
+    .summary-card.MEDIUM::before   { background: #ffd60a; }
+    .summary-card.LOW::before      { background: #30d158; }
+    .summary-card.NONE::before     { background: #636366; }
+    .summary-card.hosts::before    { background: var(--accent); }
+
+    .card-count {
+      font-family: var(--mono);
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .summary-card.CRITICAL .card-count { color: #ff2d55; }
+    .summary-card.HIGH .card-count     { color: #ff6b35; }
+    .summary-card.MEDIUM .card-count   { color: #ffd60a; }
+    .summary-card.LOW .card-count      { color: #30d158; }
+    .summary-card.NONE .card-count     { color: #636366; }
+    .summary-card.hosts .card-count    { color: var(--accent); }
+    .card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+
+    /* ── Section Title ───────────────────────────────────────────── */
+    .section-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 40px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Host Card ───────────────────────────────────────────────── */
+    .host-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .host-header {
+      padding: 16px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    .host-header:hover { background: #1a1a28; }
+    .host-status {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #30d158;
+      box-shadow: 0 0 6px #30d158;
+      flex-shrink: 0;
+    }
+    .host-status.down { background: #636366; box-shadow: none; }
+    .host-ip {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .host-name {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .host-tags {
+      display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 99px;
+      border: 1px solid;
+    }
+    .tag.ports { border-color: var(--accent); color: var(--accent); }
+    .tag.os    { border-color: var(--border); color: var(--muted); }
+    .chevron { margin-left: 8px; color: var(--muted); font-size: 12px; transition: transform .2s; }
+    .host-card.open .chevron { transform: rotate(180deg); }
+
+    .host-body { display: none; padding: 20px; }
+    .host-card.open .host-body { display: block; }
+
+    /* ── Port Table ──────────────────────────────────────────────── */
+    .port-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(42,42,58,.5);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(110,106,255,.04); }
+    .port-num { font-family: var(--mono); font-weight: 600; color: var(--accent); }
+    .proto { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+    .service-name { font-weight: 600; }
+    .version { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+    /* ── CVE Badges ──────────────────────────────────────────────── */
+    .cve-list { display: flex; flex-direction: column; gap: 4px; }
+    .cve-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: var(--r-sm);
+      border: 1px solid;
+      text-decoration: none;
+      white-space: nowrap;
+      width: fit-content;
+      transition: opacity .15s;
+    }
+    .cve-badge:hover { opacity: .75; }
+    .cve-badge.CRITICAL { border-color: #ff2d5560; color: #ff2d55; background: #ff2d5510; }
+    .cve-badge.HIGH     { border-color: #ff6b3560; color: #ff6b35; background: #ff6b3510; }
+    .cve-badge.MEDIUM   { border-color: #ffd60a60; color: #ffd60a; background: #ffd60a10; }
+    .cve-badge.LOW      { border-color: #30d15860; color: #30d158; background: #30d15810; }
+    .cve-badge.NONE     { border-color: #63636660; color: #636366; background: #63636610; }
+    .cve-score { font-weight: 700; }
+
+    /* ── CVE Detail Panel ────────────────────────────────────────── */
+    .cve-details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 16px;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+    .cve-details-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .cve-id {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .cve-desc {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    .cve-refs { display: flex; flex-wrap: wrap; gap: 6px; }
+    .ref-link {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent)40;
+      padding: 2px 8px;
+      border-radius: var(--r-sm);
+    }
+    .ref-link:hover { background: var(--accent)15; }
+
+    /* ── OS Section ──────────────────────────────────────────────── */
+    .os-section { margin-bottom: 16px; }
+    .os-match {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 3px 10px;
+      margin: 2px;
+    }
+    .os-match .acc { color: var(--text); margin-left: 6px; }
+
+    /* ── No Vuln State ───────────────────────────────────────────── */
+    .no-cves {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #30d158;
+      opacity: .7;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+      padding: 24px 0;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── Severity Badge (standalone) ─────────────────────────────── */
+    .sev {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: .5px;
+    }
+    .sev.CRITICAL { background: #ff2d5520; color: #ff2d55; }
+    .sev.HIGH     { background: #ff6b3520; color: #ff6b35; }
+    .sev.MEDIUM   { background: #ffd60a20; color: #ffd60a; }
+    .sev.LOW      { background: #30d15820; color: #30d158; }
+    .sev.NONE     { background: #63636620; color: #636366; }
+
+    /* ── Disclaimer Banner ───────────────────────────────────────── */
+    .disclaimer {
+      background: #1a0a00;
+      border: 1px solid #ff6b3540;
+      border-radius: var(--r-md);
+      padding: 14px 18px;
+      font-size: 12px;
+      color: #ff6b35;
+      margin-top: 32px;
+      font-family: var(--mono);
+      line-height: 1.5;
+    }
+    .disclaimer strong { display: block; margin-bottom: 4px; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 22px; }
+      .hero h1 .target { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">🛡</div>
+      <div>
+        <div class="logo-text">NET-VULN-SCANNER</div>
+        <div class="logo-sub">Automated Vulnerability Assessment</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      Generated <span>2026-04-29T09:23:40.413939Z</span><br>
+      Duration <span>14.85s</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-label">// scan report</div>
+    <h1>Vulnerability Assessment<br><span class="target">192.168.64.4</span></h1>
+    <div class="hero-meta">
+      <div class="meta-chip">HOSTS UP<span>1</span></div>
+      <div class="meta-chip">TOTAL HOSTS<span>1</span></div>
+      <div class="meta-chip">SCAN ARGS<span>-sV -sC --open -T4 --host-timeout 60s</span></div>
+      <div class="meta-chip">MIN SEVERITY<span>LOW</span></div>
+    </div>
+  </div>
+
+  
+    <div class="summary-grid">
+      <div class="summary-card hosts">
+        <div class="card-count">1/1</div>
+        <div class="card-label">Hosts Up</div>
+      </div>
+      <div class="summary-card CRITICAL">
+        <div class="card-count">0</div>
+        <div class="card-label">CRITICAL</div>
+      </div>
+      <div class="summary-card HIGH">
+        <div class="card-count">2</div>
+        <div class="card-label">HIGH</div>
+      </div>
+      <div class="summary-card MEDIUM">
+        <div class="card-count">6</div>
+        <div class="card-label">MEDIUM</div>
+      </div>
+      <div class="summary-card LOW">
+        <div class="card-count">2</div>
+        <div class="card-label">LOW</div>
+      </div>
+    </div>
+
+  <div class="disclaimer">
+    <strong>⚠ AUTHORIZED USE ONLY</strong>
+    This report is generated from an authorized security assessment.
+    Unauthorised network scanning is illegal. This tool must only be used on systems
+    you own or have explicit written permission to test. Refer to the project README
+    for the full legal disclaimer.
+  </div>
+
+  <div class="section-title">Host Details</div>
+
+  
+  <div class="host-card">
+    <div class="host-header">
+      <div class="host-status"></div>
+      <div class="host-ip">192.168.64.4</div>
+      
+      <div class="host-tags"><span class="tag ports">2 ports</span></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="host-body">
+      
+      
+      <div class="port-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Port</th>
+              <th>Service</th>
+              <th>Product / Version</th>
+              <th>CVEs</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <td>
+                <span class="port-num">22</span>
+                <span class="proto">/tcp</span>
+              </td>
+              <td><span class="service-name">ssh</span></td>
+              <td><span class="version">OpenSSH 10.2p1 Debian 3 (protocol 2.0)</span></td>
+              <td><span class="no-cves">✓ No CVEs matched</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                <span class="port-num">80</span>
+                <span class="proto">/tcp</span>
+              </td>
+              <td><span class="service-name">http</span></td>
+              <td><span class="version">Apache httpd 2.4.66 ((Debian))</span></td>
+              <td><div class="cve-list">
+                  <a class="cve-badge HIGH" href="https://nvd.nist.gov/vuln/detail/CVE-2007-4723" target="_blank" rel="noopener">
+                    <span class="cve-score">7.5</span>
+                    <span class="sev HIGH">HIGH</span>
+                    CVE-2007-4723
+                  </a>
+                  <div class="cve-details" style="display:none" id="detail-CVE-2007-4723">
+                    <div class="cve-details-header">
+                      <span class="cve-id">CVE-2007-4723</span>
+                      <span class="sev HIGH">HIGH</span>
+                      <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">CVSS 7.5</span>
+                    </div>
+                    <div class="cve-desc">Directory traversal vulnerability in Ragnarok Online Control Panel 4.3.4a, when the Apache HTTP Server is used, allows r…</div>
+                    <div class="cve-refs"><a class="ref-link" href="http://osvdb.org/45879" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://securityreason.com/securityalert/3100" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://www.securityfocus.com/archive/1/478263/100/0/threaded" target="_blank" rel="noopener">ref ↗</a></div>
+                  </div>
+                  <a class="cve-badge HIGH" href="https://nvd.nist.gov/vuln/detail/CVE-2011-2688" target="_blank" rel="noopener">
+                    <span class="cve-score">7.5</span>
+                    <span class="sev HIGH">HIGH</span>
+                    CVE-2011-2688
+                  </a>
+                  <div class="cve-details" style="display:none" id="detail-CVE-2011-2688">
+                    <div class="cve-details-header">
+                      <span class="cve-id">CVE-2011-2688</span>
+                      <span class="sev HIGH">HIGH</span>
+                      <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">CVSS 7.5</span>
+                    </div>
+                    <div class="cve-desc">SQL injection vulnerability in mysql/mysql-auth.pl in the mod_authnz_external module 3.2.5 and earlier for the Apache HT…</div>
+                    <div class="cve-refs"><a class="ref-link" href="http://anders.fix.no/software/#unix" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=633637" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://code.google.com/p/mod-auth-external/issues/detail?id=5" target="_blank" rel="noopener">ref ↗</a></div>
+                  </div>
+                  <a class="cve-badge MEDIUM" href="https://nvd.nist.gov/vuln/detail/CVE-2009-2299" target="_blank" rel="noopener">
+                    <span class="cve-score">5.0</span>
+                    <span class="sev MEDIUM">MEDIUM</span>
+                    CVE-2009-2299
+                  </a>
+                  <div class="cve-details" style="display:none" id="detail-CVE-2009-2299">
+                    <div class="cve-details-header">
+                      <span class="cve-id">CVE-2009-2299</span>
+                      <span class="sev MEDIUM">MEDIUM</span>
+                      <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">CVSS 5.0</span>
+                    </div>
+                    <div class="cve-desc">The Artofdefence Hyperguard Web Application Firewall (WAF) module before 2.5.5-11635, 3.0 before 3.0.3-11636, and 3.1 be…</div>
+                    <div class="cve-refs"><a class="ref-link" href="http://secunia.com/advisories/35645" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://www.h4ck1nb3rg.at/wafs/advisory_artofdefence_hyperguard_200907.txt" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://www.securityfocus.com/archive/1/504680/100/0/threaded" target="_blank" rel="noopener">ref ↗</a></div>
+                  </div>
+                  <a class="cve-badge MEDIUM" href="https://nvd.nist.gov/vuln/detail/CVE-2012-3526" target="_blank" rel="noopener">
+                    <span class="cve-score">5.0</span>
+                    <span class="sev MEDIUM">MEDIUM</span>
+                    CVE-2012-3526
+                  </a>
+                  <div class="cve-details" style="display:none" id="detail-CVE-2012-3526">
+                    <div class="cve-details-header">
+                      <span class="cve-id">CVE-2012-3526</span>
+                      <span class="sev MEDIUM">MEDIUM</span>
+                      <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">CVSS 5.0</span>
+                    </div>
+                    <div class="cve-desc">The reverse proxy add forward module (mod_rpaf) 0.5 and 0.6 for the Apache HTTP Server allows remote attackers to cause …</div>
+                    <div class="cve-refs"><a class="ref-link" href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=683984" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://secunia.com/advisories/50400" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://www.debian.org/security/2012/dsa-2532" target="_blank" rel="noopener">ref ↗</a></div>
+                  </div>
+                  <a class="cve-badge MEDIUM" href="https://nvd.nist.gov/vuln/detail/CVE-2012-4001" target="_blank" rel="noopener">
+                    <span class="cve-score">5.0</span>
+                    <span class="sev MEDIUM">MEDIUM</span>
+                    CVE-2012-4001
+                  </a>
+                  <div class="cve-details" style="display:none" id="detail-CVE-2012-4001">
+                    <div class="cve-details-header">
+                      <span class="cve-id">CVE-2012-4001</span>
+                      <span class="sev MEDIUM">MEDIUM</span>
+                      <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">CVSS 5.0</span>
+                    </div>
+                    <div class="cve-desc">The mod_pagespeed module before 0.10.22.6 for the Apache HTTP Server does not properly verify its host name, which allow…</div>
+                    <div class="cve-refs"><a class="ref-link" href="https://developers.google.com/speed/docs/mod_pagespeed/CVE-2012-4001" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="https://developers.google.com/speed/docs/mod_pagespeed/announce-0.10.22.6" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="https://developers.google.com/speed/docs/mod_pagespeed/CVE-2012-4001" target="_blank" rel="noopener">ref ↗</a></div>
+                  </div>
+                  <a class="cve-badge MEDIUM" href="https://nvd.nist.gov/vuln/detail/CVE-2011-1176" target="_blank" rel="noopener">
+                    <span class="cve-score">4.3</span>
+                    <span class="sev MEDIUM">MEDIUM</span>
+                    CVE-2011-1176
+                  </a>
+                  <div class="cve-details" style="display:none" id="detail-CVE-2011-1176">
+                    <div class="cve-details-header">
+                      <span class="cve-id">CVE-2011-1176</span>
+                      <span class="sev MEDIUM">MEDIUM</span>
+                      <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">CVSS 4.3</span>
+                    </div>
+                    <div class="cve-desc">The configuration merger in itk.c in the Steinar H. Gunderson mpm-itk Multi-Processing Module 2.2.11-01 and 2.2.11-02 fo…</div>
+                    <div class="cve-refs"><a class="ref-link" href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=618857" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://lists.err.no/pipermail/mpm-itk/2011-March/000393.html" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://lists.err.no/pipermail/mpm-itk/2011-March/000394.html" target="_blank" rel="noopener">ref ↗</a></div>
+                  </div>
+                  <a class="cve-badge MEDIUM" href="https://nvd.nist.gov/vuln/detail/CVE-2012-4360" target="_blank" rel="noopener">
+                    <span class="cve-score">4.3</span>
+                    <span class="sev MEDIUM">MEDIUM</span>
+                    CVE-2012-4360
+                  </a>
+                  <div class="cve-details" style="display:none" id="detail-CVE-2012-4360">
+                    <div class="cve-details-header">
+                      <span class="cve-id">CVE-2012-4360</span>
+                      <span class="sev MEDIUM">MEDIUM</span>
+                      <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">CVSS 4.3</span>
+                    </div>
+                    <div class="cve-desc">Cross-site scripting (XSS) vulnerability in the mod_pagespeed module 0.10.19.1 through 0.10.22.4 for the Apache HTTP Ser…</div>
+                    <div class="cve-refs"><a class="ref-link" href="http://osvdb.org/85430" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="https://developers.google.com/speed/docs/mod_pagespeed/CVE-2012-4360" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="https://developers.google.com/speed/docs/mod_pagespeed/announce-0.10.22.6" target="_blank" rel="noopener">ref ↗</a></div>
+                  </div>
+                  <a class="cve-badge MEDIUM" href="https://nvd.nist.gov/vuln/detail/CVE-2013-0942" target="_blank" rel="noopener">
+                    <span class="cve-score">4.3</span>
+                    <span class="sev MEDIUM">MEDIUM</span>
+                    CVE-2013-0942
+                  </a>
+                  <div class="cve-details" style="display:none" id="detail-CVE-2013-0942">
+                    <div class="cve-details-header">
+                      <span class="cve-id">CVE-2013-0942</span>
+                      <span class="sev MEDIUM">MEDIUM</span>
+                      <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">CVSS 4.3</span>
+                    </div>
+                    <div class="cve-desc">Cross-site scripting (XSS) vulnerability in EMC RSA Authentication Agent 7.1 before 7.1.1 for Web for Internet Informati…</div>
+                    <div class="cve-refs"><a class="ref-link" href="http://archives.neohapsis.com/archives/bugtraq/2013-05/0043.html" target="_blank" rel="noopener">ref ↗</a><a class="ref-link" href="http://archives.neohapsis.com/archives/bugtraq/2013-05/0043.html" target="_blank" rel="noopener">ref ↗</a></div>
+                  </div></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container">
+    net-vuln-scanner &nbsp;·&nbsp; CVE data sourced from
+    <a href="https://nvd.nist.gov/" target="_blank" rel="noopener">NIST NVD</a>
+    &nbsp;·&nbsp; Scan engine: <a href="https://nmap.org/" target="_blank" rel="noopener">Nmap</a>
+    &nbsp;·&nbsp; For authorized security testing only
+  </div>
+</footer>
+
+<script>
+  // Collapsible host cards
+  document.querySelectorAll('.host-header').forEach(h => {
+    h.addEventListener('click', () => {
+      h.closest('.host-card').classList.toggle('open');
+    });
+  });
+  // Auto-open cards with findings
+  document.querySelectorAll('.host-card').forEach(card => {
+    if (card.querySelector('.cve-badge')) card.classList.add('open');
+  });
+</script>
+
+</body>
+</html>
